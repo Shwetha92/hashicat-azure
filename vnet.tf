@@ -1,21 +1,6 @@
-data "azurerm_resource_group" "network" {
-  name = var.resource_group_name
-}
+module "vnet" {
+  source  = "Shwetha92/vnet/azurerm"
+  version = "2.4.0"
+  resource_group_name = "Gaurav"
 
-resource "azurerm_virtual_network" "Gaurav" {
-  name                = var.vnet_name
-  resource_group_name = data.azurerm_resource_group.network.name
-  location            = data.azurerm_resource_group.network.location
-  address_space       = [var.address_space]
-  dns_servers         = var.dns_servers
-  tags                = var.tags
-}
-
-resource "azurerm_subnet" "subnet1" {
-  count                                          = length(var.subnet_names)
-  name                                           = var.subnet_names[count.index]
-  resource_group_name                            = data.azurerm_resource_group.network.name
-  address_prefixes                               = [var.subnet_prefixes[count.index]]
-  virtual_network_name                           = azurerm_virtual_network.vnet.name
-  enforce_private_link_endpoint_network_policies = lookup(var.subnet_enforce_private_link_endpoint_network_policies, var.subnet_names[count.index], false)
 }
