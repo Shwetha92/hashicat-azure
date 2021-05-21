@@ -1,6 +1,6 @@
-module "vnet" {
-  source  = "Shwetha92/vnet/azurerm"
-  version = "2.4.0"
+resource "azurerm_virtual_network" "vnet" {
+  name                = "${var.prefix}-vnet"
+  location            = azurerm_resource_group.myresourcegroup.location
+  address_space       = [var.address_space]
   resource_group_name = "Gaurav"
-
 }
