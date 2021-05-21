@@ -11,7 +11,7 @@ resource "azurerm_virtual_network" "Gaurav" {
   tags                = var.tags
 }
 
-resource "azurerm_subnet" "subnet" {
+resource "azurerm_subnet" "subnet1" {
   count                                          = length(var.subnet_names)
   name                                           = var.subnet_names[count.index]
   resource_group_name                            = data.azurerm_resource_group.network.name
