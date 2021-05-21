@@ -1,4 +1,4 @@
-resource "azurerm_virtual_network" "vnet" {
+resource "azurerm_virtual_network" "vnet1" {
   name                = "${var.prefix}-vnet"
   location            = azurerm_resource_group.myresourcegroup.location
   address_space       = [var.address_space]
