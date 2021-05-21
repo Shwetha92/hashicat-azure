@@ -1,15 +1,21 @@
-resource "azurerm_resource_group" "myresourcegroup1" {
-  name     = "${var.prefix}-workshop"
-  location = var.location
-
-  tags = {
-    environment = "Production"
-  }
+data "azurerm_resource_group" "network" {
+  name = var.resource_group_name
 }
 
 resource "azurerm_virtual_network" "Gaurav" {
-  name                = "${var.prefix}-vnet"
-  location            = azurerm_resource_group.myresourcegroup1.location
+  name                = var.vnet_name
+  resource_group_name = data.azurerm_resource_group.network.name
+  location            = data.azurerm_resource_group.network.location
   address_space       = [var.address_space]
-  resource_group_name = azurerm_resource_group.myresourcegroup1.name
+  dns_servers         = var.dns_servers
+  tags                = var.tags
+}
+
+resource "azurerm_subnet" "subnet" {
+  count                                          = length(var.subnet_names)
+  name                                           = var.subnet_names[count.index]
+  resource_group_name                            = data.azurerm_resource_group.network.name
+  address_prefixes                               = [var.subnet_prefixes[count.index]]
+  virtual_network_name                           = azurerm_virtual_network.vnet.name
+  enforce_private_link_endpoint_network_policies = lookup(var.subnet_enforce_private_link_endpoint_network_policies, var.subnet_names[count.index], false)
 }
