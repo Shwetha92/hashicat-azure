@@ -7,9 +7,8 @@ resource "azurerm_resource_group" "myresourcegroup1" {
     environment = "Production"
   }
 }
-resource "azurerm_virtual_network" "Gaurav" {
-  name                = "${var.prefix}-vnet"
-  location            = azurerm_resource_group.myresourcegroup1.location
-  address_space       = [var.address_space]
+module "vnet1" {
+  source  = "Shwetha92/vnet/azurerm"
+  version = "2.4.0"
   resource_group_name = azurerm_resource_group.myresourcegroup1.name
 }
